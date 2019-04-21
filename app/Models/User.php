@@ -28,7 +28,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-//    public function findForPassport($login){
-//
-//    }
+    /**
+     * 支持用户手机和邮箱认证
+     * @param $username
+     * @return mixed
+     */
+    public function findForPassport($username)
+    {
+        filter_var($username, FILTER_VALIDATE_EMAIL) ?
+            $credentials['email'] = $username :
+            $credentials['phone'] = $username;
+
+        return self::where($credentials)->first();
+    }
 }

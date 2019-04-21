@@ -13,19 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//自定义passport oauth/token 登录令牌
+Route::post('authorizations','AuthController@store');
+//自定义passport oauth/token 刷新令牌
+Route::put('authorizations/current','AuthController@store');
 
-Route::post('/test',function(){
-    return 'post data';
-});
 
-//Route::post('login','AuthController@login');
-//Route::post('signup','AuthController@signip');
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signip');
 
-//需认证api
-Route::group(['middle:api'],function(){
-//    Route::get('logout','AuthController@logout');
-//    Route::get('/user','AuthController@user');
+    //需认证api
+    Route::group(['middleware'=>'auth:api'],function(){
+        Route::get('logout','AuthController@logout');
+        Route::get('user','AuthController@user');
+    });
 });
