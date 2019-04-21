@@ -12,12 +12,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 //自定义passport oauth/token 登录令牌
 Route::post('authorizations','AuthController@store');
 //自定义passport oauth/token 刷新令牌
 Route::put('authorizations/current','AuthController@store');
-
 
 Route::group([
     'prefix' => 'auth'
@@ -30,4 +28,8 @@ Route::group([
         Route::get('logout','AuthController@logout');
         Route::get('user','AuthController@user');
     });
+});
+
+Route::group(['namespace'=>'Api'],function(){
+    Route::get('/test','IndexController@index');
 });

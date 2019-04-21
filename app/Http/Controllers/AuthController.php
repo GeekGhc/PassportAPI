@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Controller;
 use Zend\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -26,15 +27,21 @@ class AuthController extends Controller
         try{
             return $server->respondToAccessTokenRequest($serverRequest,new Psr7Response)->withStatus(201);
         }catch(OAuthServerException $e){
-            return $this->response->errorUnauthorized($e->getMessage());
+            return $this->unauthorized($e->getMessage());
         }
     }
 
+    /**
+     * 刷新token
+     * @param AuthorizationServer $server
+     * @param ServerRequestInterface $serverRequest
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
     public function update(AuthorizationServer $server,ServerRequestInterface $serverRequest){
         try{
             return $server->respondToAccessTokenRequest($serverRequest,new Psr7Response());
         }catch(OAuthServerException $e){
-            return $this->response->errorUnauthorized($e->getMessage());
+            return $this->unauthorized($e->getMessage());
         }
     }
 
@@ -52,9 +59,7 @@ class AuthController extends Controller
 
         $user->save();
 
-        return response()->json([
-            'message'=>'用户注册成功'
-        ],201);
+        return $this->created("用户注册成功");
     }
 
     /**
@@ -66,9 +71,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if(!Auth::attempt($credentials))
-            return response()->json([
-                'message' => '用户认证失败'
-            ], 401);
+            return $this->unauthorized("用户认证失败");
 
         $user = $request->user();
 
@@ -79,14 +82,14 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
 
         $token->save();
-
-        return response()->json([
+        $data = [
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()
-        ]);
+        ];
+        return $this->success($data);
     }
 
     /**
@@ -96,9 +99,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request){
         $request->user()->token()->revoke();
-        return response()->json([
-            'message' => '用户退出成功'
-        ]);
+        return $this->message("用户退出成功");
     }
 
     /**

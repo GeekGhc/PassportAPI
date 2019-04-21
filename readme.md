@@ -38,7 +38,6 @@ $ php artisan passport:client --password --name='apkbus-ios'
 ## 执行项目初始化信息
 ```
 $ php artisan thinker
-
 $ namespace App\Models;
 $ factory(User::class,10)->create();
 ```
