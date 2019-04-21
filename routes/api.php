@@ -32,4 +32,8 @@ Route::group([
 
 Route::group(['namespace'=>'Api'],function(){
     Route::get('/test','IndexController@index');
+
+    // 用户资源
+    Route::get('/user','UserController@user');
+    Route::get('/users','UserController@users');
 });

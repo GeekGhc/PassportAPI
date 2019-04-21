@@ -41,6 +41,7 @@ $ php artisan thinker
 $ namespace App\Models;
 $ factory(User::class,10)->create();
 ```
+
 ## postman整体配置
 ![002](public/screenshot/002.png)
 
@@ -49,3 +50,35 @@ $ factory(User::class,10)->create();
 
 ## token刷新(refresh_token)
 ![003](public/screenshot/003.png)
+
+## 统一成功返回
+```
+{
+    "status": "success",
+    "code": 200,
+    "message": "请求成功"
+}
+```
+
+## 统一错误返回
+```
+{
+    "status": "error",
+    "code": 401,
+    "message": "用户认证失败"
+}
+```
+
+## 统一资源返回(其他格式参考Api Resource)
+```
+{
+    "status": "success",
+    "code": 200,
+    "data": {
+        "id": 1,
+        "name": "Joshua Torphy",
+        "email": "napoleon10@example.net",
+        "created_at": "2019-04-19 06:48:00"
+    }
+}
+```
