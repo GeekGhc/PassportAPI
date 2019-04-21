@@ -72,13 +72,61 @@ $ factory(User::class,10)->create();
 ## 统一资源返回(其他格式参考Api Resource)
 ```
 {
-    "status": "success",
-    "code": 200,
     "data": {
         "id": 1,
         "name": "Joshua Torphy",
         "email": "napoleon10@example.net",
         "created_at": "2019-04-19 06:48:00"
+    }
+}
+```
+
+## 统一资源集合返回(分页)
+```
+{
+    "data": {
+        "list": [
+            {
+                "id": 1,
+                "name": "Joshua Torphy",
+                "email": "napoleon10@example.net",
+                "created_at": "2019-04-19 06:48:00"
+            },
+            {
+                "id": 2,
+                "name": "Yessenia Ebert PhD",
+                "email": "ignatius87@example.com",
+                "created_at": "2019-04-19 06:48:00"
+            },
+            {
+                "id": 3,
+                "name": "Dr. Samson Rath IV",
+                "email": "kortiz@example.net",
+                "created_at": "2019-04-19 06:48:00"
+            },
+            {
+                "id": 4,
+                "name": "Julien Swift",
+                "email": "laurie43@example.net",
+                "created_at": "2019-04-19 06:48:00"
+            }
+        ],
+        "count": 4
+    },
+    "links": {
+        "first": "http://laravel-passport.site/api/users?page=1",
+        "last": "http://laravel-passport.site/api/users?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://laravel-passport.site/api/users",
+        "per_page": 15,
+        "to": 4,
+        "total": 4
     }
 }
 ```

@@ -12,8 +12,7 @@ class UserController extends Controller
      * @return UserResource
      */
     public function user(){
-        $data = new UserResource(User::find(1));
-        return $this->success($data);
+        return new UserResource(User::find(1));
     }
 
     /**
@@ -25,10 +24,10 @@ class UserController extends Controller
 //        $data = UserResource::collection(User::all());
 
         //用户集合 自定义格式
-        $data =  new UserCollection(User::all());
+//        $data =  new UserCollection(User::all());
 
         //用户分页
-//        $data = new UserCollection(User::paginate());
+        $data = new UserCollection(User::paginate());
         return $data;
     }
 
